@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Внешние файлы приложения -->
+    <external-files-path
+        name="external_app_files"
+        path="." />
+
+    <!-- Документы приложения -->
+    <external-files-path
+        name="documents"
+        path="Documents/" />
+
+    <!-- PDF файлы -->
+    <external-files-path
+        name="pdf_files"
+        path="Documents/BarcodePDFs/" />
+
+    <!-- Внутренний cache -->
+    <cache-path
+        name="internal_cache"
+        path="." />
+
+    <!-- PDF в кеше -->
+    <cache-path
+        name="pdf_cache"
+        path="pdfs/" />
+
+    <!-- Внешний cache -->
+    <external-cache-path
+        name="external_cache"
+        path="." />
+
+</paths>
