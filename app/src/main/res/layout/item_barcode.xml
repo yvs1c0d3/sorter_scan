@@ -1,100 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    android:background="?attr/colorSurfaceVariant"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
     android:clickable="true"
-    android:focusable="true"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    android:focusable="true">
 
-    <!-- Основная информация о коде -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="16dp">
 
-        <!-- Код -->
-        <TextView
-            android:id="@+id/barcodeCodeTextView"
-            android:layout_width="match_parent"
+        <!-- Main content -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="1. ABC123456789" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <!-- Комментарий -->
-        <TextView
-            android:id="@+id/barcodeCommentTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-            android:visibility="gone"
-            tools:text="💬 Комментарий к коду"
-            tools:visibility="visible" />
+            <!-- Code -->
+            <TextView
+                android:id="@+id/barcodeCodeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface"
+                tools:text="ABC123456789" />
 
-        <!-- Время сканирования -->
-        <TextView
-            android:id="@+id/barcodeTimestampTextView"
-            android:layout_width="match_parent"
+            <!-- Comment -->
+            <TextView
+                android:id="@+id/barcodeCommentTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone"
+                tools:text="💬 Комментарий к коду"
+                tools:visibility="visible" />
+
+            <!-- Timestamp -->
+            <TextView
+                android:id="@+id/barcodeTimestampTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:alpha="0.7"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="22.07.2025 14:30:25" />
+
+        </LinearLayout>
+
+        <!-- Action buttons -->
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:alpha="0.7"
-            android:textSize="12sp"
-            tools:text="22.07.2025 14:30:25" />
+            android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Edit comment -->
+            <ImageView
+                android:id="@+id/editCommentIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Редактировать комментарий"
+                android:focusable="true"
+                android:padding="4dp"
+                android:src="@drawable/ic_edit" />
+
+            <!-- Generate barcode -->
+            <ImageView
+                android:id="@+id/generateCode128Icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/generate_barcode"
+                android:focusable="true"
+                android:padding="4dp"
+                android:src="@drawable/ic_barcode_generator" />
+
+            <!-- Delete -->
+            <ImageView
+                android:id="@+id/deleteIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/delete"
+                android:focusable="true"
+                android:padding="4dp"
+                android:src="@drawable/ic_delete" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <!-- Кнопки действий -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <!-- Редактировать комментарий -->
-        <ImageView
-            android:id="@+id/editCommentIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="Редактировать комментарий"
-            android:focusable="true"
-            android:padding="4dp"
-            android:src="@drawable/ic_edit" />
-
-        <!-- Генерировать штрихкод -->
-        <ImageView
-            android:id="@+id/generateCode128Icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/generate_barcode"
-            android:focusable="true"
-            android:padding="4dp"
-            android:src="@drawable/ic_barcode_generator" />
-
-        <!-- Удалить -->
-        <ImageView
-            android:id="@+id/deleteIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/delete"
-            android:focusable="true"
-            android:padding="4dp"
-            android:src="@drawable/ic_delete" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

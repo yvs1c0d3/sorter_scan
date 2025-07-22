@@ -36,13 +36,18 @@
     <string name="language_changed">Język został zmieniony</string>
     <string name="restart_required">Uruchom ponownie aplikację aby zobaczyć zmiany</string>
 
-    <!-- UI Messages -->
+    <!-- UI Messages in Polish -->
     <string name="permission_camera_denied">Uprawnienie kamery odrzucone</string>
     <string name="permission_explanation">Proszę udzielić uprawnienia kamery w ustawieniach aplikacji, aby korzystać z tej funkcji.</string>
     <string name="open_settings">Otwórz ustawienia</string>
     <string name="cancel">Anuluj</string>
+    <string name="code_scanned">✅ Zeskanowano: %s</string>
+    <string name="code_blocked">⛔ Kod zablokowany przez filtr: %s</string>
+    <string name="code_exists">Kod już istnieje na liście</string>
+    <string name="invalid_code_format">Nieprawidłowy format kodu</string>
     <string name="please_enter_code">Proszę wprowadzić kod</string>
     <string name="comment_updated">Komentarz zaktualizowany</string>
+    <string name="code_deleted">Kod \"%s\" usunięty</string>
     <string name="clear_history_title">Wyczyść historię</string>
     <string name="clear_history_message">Czy na pewno chcesz wyczyścić całą historię skanowania?</string>
     <string name="yes">Tak</string>
@@ -50,23 +55,12 @@
     <string name="edit_comment">Edytuj komentarz</string>
     <string name="enter_comment">Wprowadź komentarz</string>
     <string name="empty_barcode_list">Lista zeskanowanych kodów jest pusta</string>
+    <string name="pdf_created">PDF utworzony: %s</string>
+    <string name="pdf_creation_error">Błąd podczas tworzenia PDF: %s</string>
     <string name="image_saved_gallery">Obraz zapisany w Galerii</string>
     <string name="image_save_failed">Nie udało się zapisać obrazu</string>
     <string name="share_image">Udostępnij obraz</string>
     <string name="no_pdf_apps">Nie znaleziono aplikacji do wysyłania PDF</string>
-
-    <!-- Formatted messages -->
-    <string name="scanned_codes_with_date">📋 Zeskanowane kody (%1$s): %2$d</string>
-    <string name="code_blocked_message">⛔ Kod zablokowany przez filtr: %1$s</string>
-    <string name="code_scanned_message">✅ Zeskanowano: %1$s</string>
-    <string name="code_deleted_message">Kod "%1$s" został usunięty</string>
-    <string name="generated_code_message">Wygenerowany kod: %1$s</string>
-    <string name="barcode_generation_error">Błąd podczas generowania kodu kreskowego: %1$s</string>
-    <string name="pdf_created_message">PDF utworzony: %1$s</string>
-    <string name="pdf_creation_error">Błąd podczas tworzenia PDF: %1$s</string>
-    <string name="share_pdf">Udostępnij PDF</string>
-    <string name="pdf_share_error">Błąd podczas udostępniania PDF: %1$s</string>
-    <string name="image_save_error">Błąd zapisu: %1$s</string>
-    <string name="image_saved_path">Obraz zapisany: %1$s</string>
-    <string name="image_share_error">Błąd podczas przygotowywania obrazu do udostępnienia: %1$s</string>
+    <string name="generated_code">Wygenerowany kod: %s</string>
+    <string name="barcode_generation_error">Błąd podczas generowania kodu kreskowego: %s</string>
 </resources>
