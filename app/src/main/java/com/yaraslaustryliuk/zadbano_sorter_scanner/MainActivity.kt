@@ -28,9 +28,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
@@ -83,8 +81,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var barcodeListHeaderTextView: MaterialTextView
     private lateinit var clearButton: MaterialButton
     private lateinit var generatePdfButton: MaterialButton
-    private lateinit var cameraProvider: ProcessCameraProvider
-    private lateinit var camera: Camera
+    private var cameraProvider: ProcessCameraProvider? = null
+    private var camera: Camera? = null
     private lateinit var cameraToggleButton: SwitchMaterial
     private lateinit var manualInputEditText: TextInputEditText
     private lateinit var addManualCodeButton: MaterialButton
@@ -137,38 +135,48 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initializeViews()
-        setupToolbar()
-        setupRecyclerView()
-        setupClickListeners()
-        loadScannedBarcodes()
-        updateBarcodeListHeader()
+        try {
+            initializeViews()
+            setupToolbar()
+            setupRecyclerView()
+            setupClickListeners()
+            loadScannedBarcodes()
+            updateBarcodeListHeader()
 
-        cameraExecutor = Executors.newSingleThreadExecutor()
-        requestCameraPermission()
+            cameraExecutor = Executors.newSingleThreadExecutor()
+            requestCameraPermission()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in onCreate: ${e.message}", e)
+            showSnackbar("Błąd podczas inicjalizacji aplikacji: ${e.message}", true)
+        }
     }
 
     /**
      * Инициализация всех View компонентов
      */
     private fun initializeViews() {
-        toolbar = findViewById(R.id.toolbar)
-        previewView = findViewById(R.id.previewView)
-        barcodeRecyclerView = findViewById(R.id.barcodeRecyclerView)
-        barcodeListHeaderTextView = findViewById(R.id.barcodeListHeaderTextView)
-        clearButton = findViewById(R.id.clearButton)
-        generatePdfButton = findViewById(R.id.generatePdfButton)
-        manualInputEditText = findViewById(R.id.manualInputEditText)
-        addManualCodeButton = findViewById(R.id.addManualCodeButton)
-        cameraToggleButton = findViewById(R.id.cameraToggleButton)
+        try {
+            toolbar = findViewById(R.id.toolbar)
+            previewView = findViewById(R.id.previewView)
+            barcodeRecyclerView = findViewById(R.id.barcodeRecyclerView)
+            barcodeListHeaderTextView = findViewById(R.id.barcodeListHeaderTextView)
+            clearButton = findViewById(R.id.clearButton)
+            generatePdfButton = findViewById(R.id.generatePdfButton)
+            manualInputEditText = findViewById(R.id.manualInputEditText)
+            addManualCodeButton = findViewById(R.id.addManualCodeButton)
+            cameraToggleButton = findViewById(R.id.cameraToggleButton)
 
-        // Barcode display components
-        barcodeDisplayLayout = findViewById(R.id.barcodeDisplayLayout)
-        generatedCodeTextView = findViewById(R.id.generatedCodeTextView)
-        generatedCodeImageView = findViewById(R.id.generatedCodeImageView)
-        saveCodeButton = findViewById(R.id.saveCodeButton)
-        shareCodeButton = findViewById(R.id.shareCodeButton)
-        closeDisplayButton = findViewById(R.id.closeDisplayButton)
+            // Barcode display components
+            barcodeDisplayLayout = findViewById(R.id.barcodeDisplayLayout)
+            generatedCodeTextView = findViewById(R.id.generatedCodeTextView)
+            generatedCodeImageView = findViewById(R.id.generatedCodeImageView)
+            saveCodeButton = findViewById(R.id.saveCodeButton)
+            shareCodeButton = findViewById(R.id.shareCodeButton)
+            closeDisplayButton = findViewById(R.id.closeDisplayButton)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error initializing views: ${e.message}", e)
+            throw e
+        }
     }
 
     /**
@@ -230,7 +238,12 @@ class MainActivity : AppCompatActivity() {
         // Camera toggle
         cameraToggleButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                bindCameraUseCases()
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    bindCameraUseCases()
+                } else {
+                    cameraToggleButton.isChecked = false
+                    requestCameraPermission()
+                }
             } else {
                 stopCamera()
             }
@@ -260,11 +273,6 @@ class MainActivity : AppCompatActivity() {
         // Barcode display dialog buttons
         closeDisplayButton.setOnClickListener {
             barcodeDisplayLayout.visibility = View.GONE
-        }
-
-        // Camera toggle initial state
-        if (cameraToggleButton.isChecked) {
-            startCamera()
         }
     }
 
@@ -334,31 +342,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Запрос разрешения на управление внешним хранилищем
-     */
-    private fun requestManageExternalStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (!Environment.isExternalStorageManager()) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Wymagane uprawnienie")
-                    .setMessage("Do zapisywania plików PDF wymagane jest uprawnienie do zarządzania wszystkimi plikami.")
-                    .setPositiveButton("Zezwól") { _, _ ->
-                        try {
-                            val intentAppSpecific = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                            intentAppSpecific.data = Uri.parse("package:${applicationContext.packageName}")
-                            requestManageStoragePermission.launch(intentAppSpecific)
-                        } catch (e: Exception) {
-                            val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                            requestManageStoragePermission.launch(intent)
-                        }
-                    }
-                    .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-                    .show()
-            }
-        }
-    }
-
-    /**
      * Показать объяснение необходимости разрешения
      */
     private fun showPermissionRationale(permissionName: String) {
@@ -381,8 +364,13 @@ class MainActivity : AppCompatActivity() {
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
-            cameraProvider = cameraProviderFuture.get()
-            bindCameraUseCases()
+            try {
+                cameraProvider = cameraProviderFuture.get()
+                bindCameraUseCases()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error starting camera: ${e.message}", e)
+                showSnackbar("Błąd podczas uruchamiania kamery: ${e.message}", true)
+            }
         }, ContextCompat.getMainExecutor(this))
     }
 
@@ -390,32 +378,33 @@ class MainActivity : AppCompatActivity() {
      * Привязка использования камеры
      */
     private fun bindCameraUseCases() {
-        if (!::cameraProvider.isInitialized) {
+        val provider = cameraProvider
+        if (provider == null) {
             Log.e(TAG, "CameraProvider nie zostało zainicjalizowane podczas próby powiązania przypadków użycia.")
             return
         }
 
-        cameraProvider.unbindAll()
-        val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-        val preview = Preview.Builder().build().also {
-            it.setSurfaceProvider(previewView.surfaceProvider)
-        }
-
-        val imageAnalyzer = ImageAnalysis.Builder()
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .build()
-            .also {
-                it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcodes ->
-                    if (barcodes.isNotEmpty() && !isScanningPaused) {
-                        for (barcode in barcodes) {
-                            addBarcodeToList(barcode.rawValue ?: "Nieznany kod")
-                        }
-                    }
-                })
+        try {
+            provider.unbindAll()
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            val preview = Preview.Builder().build().also {
+                it.setSurfaceProvider(previewView.surfaceProvider)
             }
 
-        try {
-            camera = cameraProvider.bindToLifecycle(
+            val imageAnalyzer = ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build()
+                .also {
+                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcodes ->
+                        if (barcodes.isNotEmpty() && !isScanningPaused) {
+                            for (barcode in barcodes) {
+                                addBarcodeToList(barcode.rawValue ?: "Nieznany kod")
+                            }
+                        }
+                    })
+                }
+
+            camera = provider.bindToLifecycle(
                 this, cameraSelector, preview, imageAnalyzer
             )
             previewView.visibility = View.VISIBLE
@@ -429,10 +418,8 @@ class MainActivity : AppCompatActivity() {
      * Остановка камеры
      */
     private fun stopCamera() {
-        if (::cameraProvider.isInitialized) {
-            cameraProvider.unbindAll()
-            previewView.visibility = View.INVISIBLE
-        }
+        cameraProvider?.unbindAll()
+        previewView.visibility = View.INVISIBLE
     }
 
     /**
@@ -513,29 +500,33 @@ class MainActivity : AppCompatActivity() {
      * Сохранить список кодов в SharedPreferences
      */
     private fun saveScannedBarcodes() {
-        val sharedPrefs = getSharedPreferences("barcode_history", Context.MODE_PRIVATE)
-        val editor = sharedPrefs.edit()
-        val json = Gson().toJson(scannedBarcodes)
-        editor.putString("history_list", json)
-        editor.apply()
+        try {
+            val sharedPrefs = getSharedPreferences("barcode_history", Context.MODE_PRIVATE)
+            val editor = sharedPrefs.edit()
+            val json = Gson().toJson(scannedBarcodes)
+            editor.putString("history_list", json)
+            editor.apply()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error saving barcodes: ${e.message}", e)
+        }
     }
 
     /**
      * Загрузить список кодов из SharedPreferences
      */
     private fun loadScannedBarcodes() {
-        val sharedPrefs = getSharedPreferences("barcode_history", MODE_PRIVATE)
-        val json = sharedPrefs.getString("history_list", null)
-        if (json != null) {
-            try {
+        try {
+            val sharedPrefs = getSharedPreferences("barcode_history", MODE_PRIVATE)
+            val json = sharedPrefs.getString("history_list", null)
+            if (json != null) {
                 val type = object : TypeToken<MutableList<BarcodeItem>>() {}.type
                 val loadedList: MutableList<BarcodeItem> = Gson().fromJson(json, type)
                 scannedBarcodes.clear()
                 scannedBarcodes.addAll(loadedList)
                 barcodeAdapter.submitList(scannedBarcodes.toList())
-            } catch (e: Exception) {
-                Log.e(TAG, "Błąd podczas ładowania historii: ${e.message}")
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "Błąd podczas ładowania historii: ${e.message}", e)
         }
     }
 

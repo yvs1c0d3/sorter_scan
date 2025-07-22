@@ -7,10 +7,12 @@
     android:layout_marginBottom="8dp"
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/brand_white"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="@color/brand_blue"
                 tools:text="ABC123456789" />
 
             <!-- Comment -->
@@ -42,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textSize="14sp"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="@color/brand_cyan"
                 android:visibility="gone"
                 tools:text="💬 Комментарий к коду"
                 tools:visibility="visible" />
@@ -55,7 +57,7 @@
                 android:layout_marginTop="4dp"
                 android:alpha="0.7"
                 android:textSize="12sp"
-                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textColor="@color/md_theme_light_onSurfaceVariant"
                 tools:text="22.07.2025 14:30:25" />
 
         </LinearLayout>
@@ -71,40 +73,43 @@
             <!-- Edit comment -->
             <ImageView
                 android:id="@+id/editCommentIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginEnd="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="Редактировать комментарий"
                 android:focusable="true"
-                android:padding="4dp"
-                android:src="@drawable/ic_edit" />
+                android:padding="6dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/brand_cyan" />
 
             <!-- Generate barcode -->
             <ImageView
                 android:id="@+id/generateCode128Icon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginEnd="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/generate_barcode"
                 android:focusable="true"
-                android:padding="4dp"
-                android:src="@drawable/ic_barcode_generator" />
+                android:padding="6dp"
+                android:src="@drawable/ic_barcode_generator"
+                app:tint="@color/brand_blue" />
 
             <!-- Delete -->
             <ImageView
                 android:id="@+id/deleteIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/delete"
                 android:focusable="true"
-                android:padding="4dp"
-                android:src="@drawable/ic_delete" />
+                android:padding="6dp"
+                android:src="@drawable/ic_delete"
+                app:tint="@color/md_theme_light_error" />
 
         </LinearLayout>
 

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:background="@color/brand_white"
     tools:context=".MainActivity">
 
     <!-- Toolbar -->
@@ -13,245 +14,285 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:titleTextColor="?attr/colorOnPrimary"
-        app:navigationIconTint="?attr/colorOnPrimary" />
+        android:background="@color/brand_blue"
+        app:titleTextColor="@color/brand_white"
+        app:navigationIconTint="@color/brand_white" />
 
     <!-- Content with padding -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Camera Preview Card -->
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <!-- Camera Preview Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
+                android:layout_marginBottom="16dp"
+                style="@style/CustomCard">
 
-                <!-- Camera Preview -->
-                <androidx.camera.view.PreviewView
-                    android:id="@+id/previewView"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="?attr/colorSurfaceVariant" />
-
-                <!-- Camera Toggle -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/camera_toggle"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="📷 Сканирование камерой"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_blue"
+                        android:layout_marginBottom="12dp" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/cameraToggleButton"
-                        android:layout_width="wrap_content"
+                    <!-- Camera Preview -->
+                    <androidx.camera.view.PreviewView
+                        android:id="@+id/previewView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@color/md_theme_light_surfaceVariant"
+                        android:backgroundTint="@color/brand_cyan" />
+
+                    <!-- Camera Toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:checked="true" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/camera_toggle"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_blue" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/cameraToggleButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            app:thumbTint="@color/brand_cyan"
+                            app:trackTint="@color/brand_blue" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Manual Input Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
+            <!-- Manual Input Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginBottom="16dp"
+                style="@style/CustomCard">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="✏️ Ручной ввод кода"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Manual input -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/manualInputEditText"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        android:hint="@string/enter_code_manually"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:singleLine="true" />
+                        android:text="✏️ Ручной ввод кода"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_blue"
+                        android:layout_marginBottom="12dp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/addManualCodeButton"
-                        android:layout_width="wrap_content"
+                    <!-- Manual input -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/add_code" />
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:boxStrokeColor="@color/brand_blue"
+                            app:hintTextColor="@color/brand_blue">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/manualInputEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_code_manually"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textColor="@color/brand_blue" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/addManualCodeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_code"
+                            style="@style/CustomPrimaryButton" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Scanned Codes List Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
+            <!-- Scanned Codes List Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:minHeight="300dp"
+                style="@style/CustomCard">
 
-                <!-- Header -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/barcodeListHeaderTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="📋 Отсканированные коды (0)"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_blue" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/clearButton"
+                            style="@style/CustomSecondaryButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Очистить" />
+
+                    </LinearLayout>
+
+                    <!-- RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/barcodeRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="200dp"
+                        tools:listitem="@layout/item_barcode" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- PDF Generation Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/generatePdfButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="📄 Создать PDF"
+                android:textSize="16sp"
+                style="@style/CustomPrimaryButton"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Barcode Display Dialog -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/barcodeDisplayLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                style="@style/CustomCard"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
                     <TextView
-                        android:id="@+id/barcodeListHeaderTextView"
-                        android:layout_width="0dp"
+                        android:id="@+id/generatedCodeTextView"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="📋 Отсканированные коды (0)"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/brand_blue"
+                        tools:text="Сгенерированный код: ABC12345" />
+
+                    <ImageView
+                        android:id="@+id/generatedCodeImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="@color/brand_white"
+                        android:contentDescription="Сгенерированный штрихкод"
+                        android:padding="8dp"
+                        android:scaleType="fitCenter" />
+
+                    <!-- Action buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveCodeButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/save"
+                            style="@style/CustomPrimaryButton" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/shareCodeButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:text="@string/share"
+                            style="@style/CustomSecondaryButton" />
+
+                    </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/clearButton"
+                        android:id="@+id/closeDisplayButton"
                         style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Очистить" />
+                        android:layout_gravity="center"
+                        android:text="@string/close"
+                        android:textColor="@color/brand_blue" />
 
                 </LinearLayout>
 
-                <!-- RecyclerView -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/barcodeRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    tools:listitem="@layout/item_barcode" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- PDF Generation Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/generatePdfButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="📄 Создать PDF"
-            android:textSize="16sp" />
-
-        <!-- Barcode Display Dialog -->
-        <LinearLayout
-            android:id="@+id/barcodeDisplayLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:background="@android:color/white"
-            android:elevation="12dp"
-            android:orientation="vertical"
-            android:padding="24dp"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/generatedCodeTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="Сгенерированный код: ABC12345" />
-
-            <ImageView
-                android:id="@+id/generatedCodeImageView"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginBottom="24dp"
-                android:background="?attr/colorSurfaceVariant"
-                android:contentDescription="Сгенерированный штрихкод"
-                android:padding="8dp"
-                android:scaleType="fitCenter" />
-
-            <!-- Action buttons -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/saveCodeButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/save" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/shareCodeButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/share" />
-
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/closeDisplayButton"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/close" />
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
