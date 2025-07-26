@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Zadbano Sorter Scanner</string>
+    <string name="camera_permission_required">Разрешение на камеру необходимо для сканирования</string>
+    <string name="scanned_codes">Отсканированные коды</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="generate_pdf">Создать PDF</string>
+    <string name="enter_code_manually">Введите код вручную</string>
+    <string name="add_code">Добавить код</string>
+    <string name="comment_hint">Добавить комментарий</string>
+    <string name="save">Сохранить</string>
+    <string name="share">Поделиться</string>
+    <string name="close">Закрыть</string>
+    <string name="camera_toggle">Камера</string>
+    <string name="delete">Удалить</string>
+    <string name="generate_barcode">Создать штрихкод</string>
+    <string name="code_filtered">Код заблокирован фильтром</string>
+    <string name="code_already_exists">Код уже существует</string>
+    <string name="invalid_code">Неверный формат кода</string>
+
+    <!-- Filter Settings strings -->
+    <string name="filter_settings">Настройки фильтра</string>
+    <string name="filter_enabled">Фильтр включен</string>
+    <string name="filter_disabled">Фильтр выключен</string>
+    <string name="add_filter">Добавить фильтр</string>
+    <string name="remove_filter">Удалить фильтр</string>
+    <string name="reset_filters">Сбросить фильтры</string>
+    <string name="filter_prefix_hint">Введите префикс для блокировки</string>
+    <string name="blocked_prefixes">Заблокированные префиксы</string>
+
+    <!-- Language Settings -->
+    <string name="language_settings">Настройки языка</string>
+    <string name="current_language">Текущий язык</string>
+    <string name="polish">Польский</string>
+    <string name="russian">Русский</string>
+    <string name="change_language">Изменить язык</string>
+    <string name="language_changed">Язык изменен</string>
+    <string name="restart_required">Перезапустите приложение, чтобы увидеть изменения</string>
+
+    <!-- UI Messages in Russian -->
+    <string name="permission_camera_denied">Разрешение камеры отклонено</string>
+    <string name="permission_explanation">Пожалуйста, предоставьте разрешение на камеру в настройках приложения, чтобы использовать эту функцию.</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="cancel">Отмена</string>
+    <string name="code_scanned">✅ Отсканирован: %s</string>
+    <string name="code_blocked">⛔ Код заблокирован фильтром: %s</string>
+    <string name="code_exists">Код уже существует в списке</string>
+    <string name="invalid_code_format">Неверный формат кода</string>
+    <string name="please_enter_code">Пожалуйста, введите код</string>
+    <string name="comment_updated">Комментарий обновлен</string>
+    <string name="code_deleted">Код \"%s\" удален</string>
+    <string name="clear_history_title">Очистить историю</string>
+    <string name="clear_history_message">Вы уверены, что хотите очистить всю историю сканирований?</string>
+    <string name="yes">Да</string>
+    <string name="history_cleared">История очищена</string>
+    <string name="edit_comment">Редактировать комментарий</string>
+    <string name="enter_comment">Введите комментарий</string>
+    <string name="empty_barcode_list">Список отсканированных кодов пуст</string>
+    <string name="pdf_created">PDF создан: %s</string>
+    <string name="pdf_creation_error">Ошибка при создании PDF: %s</string>
+    <string name="image_saved_gallery">Изображение сохранено в Галерею</string>
+    <string name="image_save_failed">Не удалось сохранить изображение</string>
+    <string name="share_image">Поделиться изображением</string>
+    <string name="no_pdf_apps">Не найдено приложений для отправки PDF</string>
+    <string name="generated_code">Сгенерированный код: %s</string>
+    <string name="barcode_generation_error">Ошибка при генерации штрихкода: %s</string>
+</resources>

@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Zadbano Sorter Scanner</string>
+    <string name="camera_permission_required">Uprawnienie kamery jest wymagane do skanowania</string>
+    <string name="scanned_codes">Zeskanowane kody</string>
+    <string name="clear_history">Wyczyść historię</string>
+    <string name="generate_pdf">Utwórz PDF</string>
+    <string name="enter_code_manually">Wprowadź kod ręcznie</string>
+    <string name="add_code">Dodaj kod</string>
+    <string name="comment_hint">Dodaj komentarz</string>
+    <string name="save">Zapisz</string>
+    <string name="share">Udostępnij</string>
+    <string name="close">Zamknij</string>
+    <string name="camera_toggle">Kamera</string>
+    <string name="delete">Usuń</string>
+    <string name="generate_barcode">Utwórz kod kreskowy</string>
+    <string name="code_filtered">Kod zablokowany przez filtr</string>
+    <string name="code_already_exists">Kod już istnieje</string>
+    <string name="invalid_code">Nieprawidłowy format kodu</string>
+
+    <!-- Filter Settings strings -->
+    <string name="filter_settings">Ustawienia filtra</string>
+    <string name="filter_enabled">Filtr włączony</string>
+    <string name="filter_disabled">Filtr wyłączony</string>
+    <string name="add_filter">Dodaj filtr</string>
+    <string name="remove_filter">Usuń filtr</string>
+    <string name="reset_filters">Zresetuj filtry</string>
+    <string name="filter_prefix_hint">Wprowadź prefiks do zablokowania</string>
+    <string name="blocked_prefixes">Zablokowane prefiksy</string>
+
+    <!-- Language Settings -->
+    <string name="language_settings">Ustawienia języka</string>
+    <string name="current_language">Aktualny język</string>
+    <string name="polish">Polski</string>
+    <string name="russian">Rosyjski</string>
+    <string name="change_language">Zmień język</string>
+    <string name="language_changed">Język został zmieniony</string>
+    <string name="restart_required">Uruchom ponownie aplikację aby zobaczyć zmiany</string>
+
+    <!-- UI Messages in Polish -->
+    <string name="permission_camera_denied">Uprawnienie kamery odrzucone</string>
+    <string name="permission_explanation">Proszę udzielić uprawnienia kamery w ustawieniach aplikacji, aby korzystać z tej funkcji.</string>
+    <string name="open_settings">Otwórz ustawienia</string>
+    <string name="cancel">Anuluj</string>
+    <string name="code_scanned">✅ Zeskanowano: %s</string>
+    <string name="code_blocked">⛔ Kod zablokowany przez filtr: %s</string>
+    <string name="code_exists">Kod już istnieje na liście</string>
+    <string name="invalid_code_format">Nieprawidłowy format kodu</string>
+    <string name="please_enter_code">Proszę wprowadzić kod</string>
+    <string name="comment_updated">Komentarz zaktualizowany</string>
+    <string name="code_deleted">Kod \"%s\" usunięty</string>
+    <string name="clear_history_title">Wyczyść historię</string>
+    <string name="clear_history_message">Czy na pewno chcesz wyczyścić całą historię skanowania?</string>
+    <string name="yes">Tak</string>
+    <string name="history_cleared">Historia wyczyszczona</string>
+    <string name="edit_comment">Edytuj komentarz</string>
+    <string name="enter_comment">Wprowadź komentarz</string>
+    <string name="empty_barcode_list">Lista zeskanowanych kodów jest pusta</string>
+    <string name="pdf_created">PDF utworzony: %s</string>
+    <string name="pdf_creation_error">Błąd podczas tworzenia PDF: %s</string>
+    <string name="image_saved_gallery">Obraz zapisany w Galerii</string>
+    <string name="image_save_failed">Nie udało się zapisać obrazu</string>
+    <string name="share_image">Udostępnij obraz</string>
+    <string name="no_pdf_apps">Nie znaleziono aplikacji do wysyłania PDF</string>
+    <string name="generated_code">Wygenerowany kod: %s</string>
+    <string name="barcode_generation_error">Błąd podczas generowania kodu kreskowego: %s</string>
+</resources>
