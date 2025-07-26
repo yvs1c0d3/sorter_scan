@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme for dark mode -->
-    <style name="Base.Theme.ZadbanoSorterScanner" parent="Theme.Material3.DayNight">
-        <!-- Dark theme colors -->
-        <item name="colorPrimary">#70D9B4</item>
-        <item name="colorOnPrimary">#003827</item>
-        <item name="colorPrimaryContainer">#00513A</item>
-        <item name="colorOnPrimaryContainer">#8CF6D0</item>
-        <item name="colorSecondary">#B0CEC0</item>
-        <item name="colorOnSecondary">#1C352D</item>
-        <item name="colorSecondaryContainer">#334B43</item>
-        <item name="colorOnSecondaryContainer">#CCEADC</item>
+    <style name="Base.Theme.ZadbanoSorterScanner" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Dark theme colors with new color scheme -->
+        <item name="colorPrimary">#00EBFF</item>
+        <item name="colorOnPrimary">#002244</item>
+        <item name="colorPrimaryContainer">#004C6B</item>
+        <item name="colorOnPrimaryContainer">#B3F7FF</item>
+        <item name="colorSecondary">#A8A8A8</item>
+        <item name="colorOnSecondary">#002244</item>
+        <item name="colorSecondaryContainer">#002244</item>
+        <item name="colorOnSecondaryContainer">#D4D4D4</item>
         <item name="colorTertiary">#A8CBDF</item>
         <item name="colorOnTertiary">#0E3441</item>
         <item name="colorTertiaryContainer">#274B59</item>
@@ -20,12 +20,12 @@
         <item name="colorErrorContainer">#93000A</item>
         <item name="colorOnErrorContainer">#FFDAD6</item>
         <item name="colorOutline">#899389</item>
-        <item name="android:colorBackground">#0F1512</item>
-        <item name="colorOnBackground">#DFE2DC</item>
-        <item name="colorSurface">#0F1512</item>
-        <item name="colorOnSurface">#DFE2DC</item>
-        <item name="colorSurfaceVariant">#404942</item>
-        <item name="colorOnSurfaceVariant">#C0C9C1</item>
+        <item name="android:colorBackground">#001122</item>
+        <item name="colorOnBackground">#D4D4D4</item>
+        <item name="colorSurface">#002244</item>
+        <item name="colorOnSurface">#D4D4D4</item>
+        <item name="colorSurfaceVariant">#003355</item>
+        <item name="colorOnSurfaceVariant">#D4D4D4</item>
     </style>
 
     <style name="Theme.ZadbanoSorterScanner" parent="Base.Theme.ZadbanoSorterScanner" />

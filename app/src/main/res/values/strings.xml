@@ -1,19 +1,114 @@
 <resources>
-    <string name="app_name">Zadbano Sorter Scanner</string>
-    <string name="camera_permission_required">Разрешение на камеру необходимо для сканирования</string>
-    <string name="scanned_codes">Отсканированные коды</string>
-    <string name="clear_history">Очистить историю</string>
-    <string name="generate_pdf">Создать PDF</string>
-    <string name="enter_code_manually">Введите код вручную</string>
-    <string name="add_code">Добавить код</string>
-    <string name="comment_hint">Добавить комментарий</string>
-    <string name="save">Сохранить</string>
-    <string name="share">Поделиться</string>
-    <string name="close">Закрыть</string>
-    <string name="camera_toggle">Камера</string>
-    <string name="delete">Удалить</string>
-    <string name="generate_barcode">Создать штрихкод</string>
-    <string name="code_filtered">Код заблокирован фильтром</string>
-    <string name="code_already_exists">Код уже существует</string>
-    <string name="invalid_code">Неверный формат кода</string>
+    <string name="app_name">Zad Sorter</string>
+    <string name="camera_permission_required">Uprawnienie kamery jest wymagane do skanowania</string>
+    <string name="scanned_codes">Zeskanowane kody</string>
+    <string name="clear_history">Wyczyść historię</string>
+    <string name="generate_pdf">Utwórz PDF</string>
+    <string name="enter_code_manually">Wprowadź kod ręcznie</string>
+    <string name="add_code">Dodaj kod</string>
+    <string name="comment_hint">Dodaj komentarz</string>
+    <string name="save">Zapisz</string>
+    <string name="share">Udostępnij</string>
+    <string name="close">Zamknij</string>
+    <string name="camera_toggle">Kamera</string>
+    <string name="delete">Usuń</string>
+    <string name="generate_barcode">Utwórz kod kreskowy</string>
+    <string name="code_filtered">Kod zablokowany przez filtr</string>
+    <string name="code_already_exists">Kod już istnieje</string>
+    <string name="invalid_code">Nieprawidłowy format kodu</string>
+
+    <!-- WSZYSTKIE НЕДОСТАЮЩИЕ СТРОКИ -->
+    <string name="actions">Akcje</string>
+    <string name="add_filter_short">+ Dodaj</string>
+    <string name="allow">Zezwól</string>
+    <string name="blocked_prefix_description">Zablokowany prefiks</string>
+    <string name="camera_error_message">Błąd kamery: %s</string>
+    <string name="camera_init_error">Błąd inicjalizacji kamery</string>
+    <string name="camera_provider_not_initialized">Dostawca kamery nie został zainicjalizowany</string>
+    <string name="delete_filter">Usuń filtr</string>
+    <string name="filter_added">Filtr "%s" dodany</string>
+    <string name="filter_already_exists">Filtr "%s" już istnieje</string>
+    <string name="filter_deleted">Filtr "%s" usunięty</string>
+    <string name="filter_description">Filtr blokuje skanowanie kodów, zaczynających się od wskazanych prefiksów</string>
+    <string name="filter_enable_title">Włącz filtr</string>
+    <string name="filter_explanation">Kody zaczynające się od tego prefiksu będą zablokowane dla skanowania</string>
+    <string name="filter_settings_header">🛡️ Ustawienia filtra kodów</string>
+    <string name="filter_status_enabled">🟢 Filtr włączony (%d reguł)</string>
+    <string name="filters_reset">Filtry zostały zresetowane do wartości domyślnych</string>
+    <string name="generate_pdf_button">📄 Utwórz PDF</string>
+    <string name="generated_barcode_description">Wygenerowany kod kreskowy</string>
+    <string name="generated_code_sample">Wygenerowany kod: ABC12345</string>
+    <string name="manual_input_title">✏️ Ręczny wpis kodu</string>
+    <string name="permission_required">Wymagane uprawnienie</string>
+    <string name="prefix_cannot_be_empty">Prefiks nie może być pusty</string>
+    <string name="reset">Resetuj</string>
+    <string name="reset_confirmation">Czy na pewno chcesz zresetować wszystkie filtry do wartości domyślnych?</string>
+    <string name="reset_to_defaults">🔄 Zresetuj do wartości domyślnych</string>
+    <string name="scanned_codes_header">📋 Zeskanowane kody</string>
+    <string name="storage_permission_denied">Uprawnienie pamięci zostało odrzucone. Zapisywanie PDF może być ograniczone</string>
+    <string name="storage_permission_granted">Uprawnienie do zarządzania pamięcią zostało udzielone</string>
+    <string name="storage_permission_message">Do zapisywania plików PDF wymagane jest uprawnienie do zarządzania wszystkimi plikami.</string>
+    <string name="unknown_code">Nieznany kod</string>
+
+    <!-- РАНЕЕ ДОБАВЛЕННЫЕ СТРОКИ -->
+    <string name="code_blocked">Kod zablokowany</string>
+    <string name="code_deleted">Kod usunięty</string>
+    <string name="code_exists">Kod istnieje</string>
+    <string name="code_scanned">Kod zeskanowany</string>
+    <string name="generated_code">Wygenerowany kod</string>
+    <string name="invalid_code_format">Nieprawidłowy format kodu</string>
+    <string name="pdf_created">PDF utworzony</string>
+
+    <!-- Filter Settings strings -->
+    <string name="filter_settings">Ustawienia filtra</string>
+    <string name="filter_enabled">Filtr włączony</string>
+    <string name="filter_disabled">Filtr wyłączony</string>
+    <string name="add_filter">Dodaj filtr</string>
+    <string name="remove_filter">Usuń filtr</string>
+    <string name="reset_filters">Zresetuj filtry</string>
+    <string name="filter_prefix_hint">Wprowadź prefiks do zablokowania</string>
+    <string name="blocked_prefixes">Zablokowane prefiksy</string>
+
+    <!-- Language Settings -->
+    <string name="language_settings">Ustawienia języka</string>
+    <string name="current_language">Aktualny język</string>
+    <string name="polish">Polski</string>
+    <string name="russian">Rosyjski</string>
+    <string name="change_language">Zmień język</string>
+    <string name="language_changed">Język został zmieniony</string>
+    <string name="restart_required">Uruchom ponownie aplikację aby zobaczyć zmiany</string>
+
+    <!-- UI Messages -->
+    <string name="permission_camera_denied">Uprawnienie kamery odrzucone</string>
+    <string name="permission_explanation">Proszę udzielić uprawnienia kamery w ustawieniach aplikacji, aby korzystać z tej funkcji.</string>
+    <string name="open_settings">Otwórz ustawienia</string>
+    <string name="cancel">Anuluj</string>
+    <string name="please_enter_code">Proszę wprowadzić kod</string>
+    <string name="comment_updated">Komentarz zaktualizowany</string>
+    <string name="clear_history_title">Wyczyść historię</string>
+    <string name="clear_history_message">Czy na pewno chcesz wyczyścić całą historię skanowania?</string>
+    <string name="yes">Tak</string>
+    <string name="history_cleared">Historia wyczyszczona</string>
+    <string name="edit_comment">Edytuj komentarz</string>
+    <string name="enter_comment">Wprowadź komentarz</string>
+    <string name="empty_barcode_list">Lista zeskanowanych kodów jest pusta</string>
+    <string name="image_saved_gallery">Obraz zapisany w Galerii</string>
+    <string name="image_save_failed">Nie udało się zapisać obrazu</string>
+    <string name="share_image">Udostępnij obraz</string>
+    <string name="no_pdf_apps">Nie znaleziono aplikacji do wysyłania PDF</string>
+
+    <!-- Formatted messages -->
+    <string name="scanned_codes_with_date">📋 Zeskanowane kody (%1$s): %2$d</string>
+    <string name="code_blocked_message">⛔ Kod zablokowany przez filtr: %1$s</string>
+    <string name="code_scanned_message">✅ Zeskanowano: %1$s</string>
+    <string name="code_deleted_message">Kod "%1$s" został usunięty</string>
+    <string name="generated_code_message">Wygenerowany kod: %1$s</string>
+    <string name="barcode_generation_error">Błąd podczas generowania kodu kreskowego: %1$s</string>
+    <string name="pdf_created_message">PDF utworzony: %1$s</string>
+    <string name="pdf_creation_error">Błąd podczas tworzenia PDF: %1$s</string>
+    <string name="share_pdf">Udostępnij PDF</string>
+    <string name="pdf_share_error">Błąd podczas udostępniania PDF: %1$s</string>
+    <string name="image_save_error">Błąd zapisu: %1$s</string>
+    <string name="image_saved_path">Obraz zapisany: %1$s</string>
+    <string name="image_share_error">Błąd podczas przygotowywania obrazu do udostępnienia: %1$s</string>
 </resources>

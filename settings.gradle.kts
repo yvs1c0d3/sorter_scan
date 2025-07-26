@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Zadbano Sorter Scanner"
+rootProject.name = "Zad Sorter"
 include(":app")
- 

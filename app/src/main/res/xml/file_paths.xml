@@ -1,34 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Cache directory for temporary files -->
+    <cache-path name="cache" path="." />
 
-    <!-- Внешние файлы приложения -->
-    <external-files-path
-        name="external_app_files"
-        path="." />
+    <!-- PDFs directory in cache -->
+    <cache-path name="pdfs" path="pdfs/" />
 
-    <!-- Документы приложения -->
-    <external-files-path
-        name="documents"
-        path="Documents/" />
+    <!-- Images directory in cache -->
+    <cache-path name="images" path="images/" />
 
-    <!-- PDF файлы -->
-    <external-files-path
-        name="pdf_files"
-        path="Documents/BarcodePDFs/" />
+    <!-- External cache for shared files -->
+    <external-cache-path name="external_cache" path="." />
 
-    <!-- Внутренний cache -->
-    <cache-path
-        name="internal_cache"
-        path="." />
-
-    <!-- PDF в кеше -->
-    <cache-path
-        name="pdf_cache"
-        path="pdfs/" />
-
-    <!-- Внешний cache -->
-    <external-cache-path
-        name="external_cache"
-        path="." />
-
+    <!-- External files directory -->
+    <external-files-path name="external_files" path="." />
 </paths>

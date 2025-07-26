@@ -23,12 +23,9 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
@@ -41,6 +38,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -60,7 +58,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -85,14 +82,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraToggleButton: SwitchMaterial
     private lateinit var manualInputEditText: TextInputEditText
     private lateinit var addManualCodeButton: MaterialButton
-
-    // Barcode display components
-    private lateinit var barcodeDisplayLayout: LinearLayout
-    private lateinit var generatedCodeTextView: MaterialTextView
-    private lateinit var generatedCodeImageView: ImageView
-    private lateinit var saveCodeButton: MaterialButton
-    private lateinit var shareCodeButton: MaterialButton
-    private lateinit var closeDisplayButton: MaterialButton
+    private lateinit var toolbar: MaterialToolbar
 
     // Data
     private val scannedBarcodes = mutableListOf<BarcodeItem>()
@@ -108,8 +98,8 @@ class MainActivity : AppCompatActivity() {
         if (isGranted) {
             startCamera()
         } else {
-            showSnackbar("Разрешение на камеру необходимо для сканирования", true)
-            showPermissionRationale("Камера")
+            showSnackbar(getString(R.string.camera_permission_required), true)
+            showPermissionRationale(getString(R.string.camera_toggle))
         }
     }
 
@@ -118,11 +108,15 @@ class MainActivity : AppCompatActivity() {
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (Environment.isExternalStorageManager()) {
-                showSnackbar("Разрешение на управление хранилищем получено")
+                showSnackbar(getString(R.string.storage_permission_granted))
             } else {
-                showSnackbar("Разрешение не получено. Сохранение PDF может быть ограничено", true)
+                showSnackbar(getString(R.string.storage_permission_denied), true)
             }
         }
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase?.let { LanguageManager.getLanguageContext(it) })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,6 +124,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initializeViews()
+        setupToolbar()
         setupRecyclerView()
         setupClickListeners()
         loadScannedBarcodes()
@@ -143,6 +138,7 @@ class MainActivity : AppCompatActivity() {
      * Инициализация всех View компонентов
      */
     private fun initializeViews() {
+        toolbar = findViewById(R.id.toolbar)
         previewView = findViewById(R.id.previewView)
         barcodeRecyclerView = findViewById(R.id.barcodeRecyclerView)
         barcodeListHeaderTextView = findViewById(R.id.barcodeListHeaderTextView)
@@ -151,14 +147,39 @@ class MainActivity : AppCompatActivity() {
         manualInputEditText = findViewById(R.id.manualInputEditText)
         addManualCodeButton = findViewById(R.id.addManualCodeButton)
         cameraToggleButton = findViewById(R.id.cameraToggleButton)
+    }
 
-        // Barcode display components
-        barcodeDisplayLayout = findViewById(R.id.barcodeDisplayLayout)
-        generatedCodeTextView = findViewById(R.id.generatedCodeTextView)
-        generatedCodeImageView = findViewById(R.id.generatedCodeImageView)
-        saveCodeButton = findViewById(R.id.saveCodeButton)
-        shareCodeButton = findViewById(R.id.shareCodeButton)
-        closeDisplayButton = findViewById(R.id.closeDisplayButton)
+    /**
+     * Настройка Toolbar
+     */
+    private fun setupToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "Sorter"
+    }
+
+    /**
+     * Создание меню
+     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    /**
+     * Обработка кликов по меню
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_filter_settings -> {
+                startActivity(Intent(this, FilterSettingsActivity::class.java))
+                true
+            }
+            R.id.action_language_settings -> {
+                startActivity(Intent(this, LanguageSettingsActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     /**
@@ -166,9 +187,6 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setupRecyclerView() {
         barcodeAdapter = BarcodeAdapter(
-            onGenerateCode128Click = { codeValue ->
-                generateAndDisplayCode128(codeValue)
-            },
             onDeleteClick = { position ->
                 deleteBarcodeItem(position)
             },
@@ -210,13 +228,8 @@ class MainActivity : AppCompatActivity() {
                 addBarcodeToList(code)
                 manualInputEditText.text?.clear()
             } else {
-                showSnackbar("Пожалуйста, введите код", true)
+                showSnackbar(getString(R.string.please_enter_code), true)
             }
-        }
-
-        // Barcode display dialog buttons
-        closeDisplayButton.setOnClickListener {
-            barcodeDisplayLayout.visibility = View.GONE
         }
 
         // Camera toggle initial state
@@ -231,17 +244,17 @@ class MainActivity : AppCompatActivity() {
     private fun showEditCommentDialog(position: Int, currentComment: String) {
         val editText = TextInputEditText(this).apply {
             setText(currentComment)
-            hint = "Введите комментарий"
+            hint = getString(R.string.enter_comment)
         }
 
         MaterialAlertDialogBuilder(this)
-            .setTitle("Редактировать комментарий")
+            .setTitle(getString(R.string.edit_comment))
             .setView(editText)
-            .setPositiveButton("Сохранить") { _, _ ->
+            .setPositiveButton(getString(R.string.save)) { _, _ ->
                 val newComment = editText.text.toString().trim()
                 updateBarcodeComment(position, newComment)
             }
-            .setNegativeButton("Отмена", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
@@ -255,7 +268,7 @@ class MainActivity : AppCompatActivity() {
             scannedBarcodes[position] = newItem
             barcodeAdapter.submitList(scannedBarcodes.toList())
             saveScannedBarcodes()
-            showSnackbar("Комментарий обновлен")
+            showSnackbar(getString(R.string.comment_updated))
         }
     }
 
@@ -268,7 +281,7 @@ class MainActivity : AppCompatActivity() {
                 startCamera()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                showPermissionRationale("Камера")
+                showPermissionRationale(getString(R.string.camera_toggle))
             }
             else -> {
                 requestPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -286,32 +299,7 @@ class MainActivity : AppCompatActivity() {
             barcodeAdapter.submitList(scannedBarcodes.toList())
             saveScannedBarcodes()
             updateBarcodeListHeader()
-            showSnackbar("Код \"$deletedCode\" удален")
-        }
-    }
-
-    /**
-     * Запрос разрешения на управление внешним хранилищем
-     */
-    private fun requestManageExternalStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (!Environment.isExternalStorageManager()) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Необходимо разрешение")
-                    .setMessage("Для сохранения PDF-файлов требуется разрешение на управление всеми файлами.")
-                    .setPositiveButton("Разрешить") { _, _ ->
-                        try {
-                            val intentAppSpecific = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                            intentAppSpecific.data = Uri.parse("package:${applicationContext.packageName}")
-                            requestManageStoragePermission.launch(intentAppSpecific)
-                        } catch (e: Exception) {
-                            val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                            requestManageStoragePermission.launch(intent)
-                        }
-                    }
-                    .setNegativeButton("Отмена") { dialog, _ -> dialog.dismiss() }
-                    .show()
-            }
+            showSnackbar(getString(R.string.code_deleted_message, deletedCode))
         }
     }
 
@@ -320,15 +308,15 @@ class MainActivity : AppCompatActivity() {
      */
     private fun showPermissionRationale(permissionName: String) {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Разрешение $permissionName отклонено")
-            .setMessage("Пожалуйста, предоставьте разрешение на $permissionName в настройках приложения, чтобы использовать эту функцию.")
-            .setPositiveButton("Открыть настройки") { _, _ ->
+            .setTitle(getString(R.string.permission_camera_denied))
+            .setMessage(getString(R.string.permission_explanation))
+            .setPositiveButton(getString(R.string.open_settings)) { _, _ ->
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 val uri = Uri.fromParts("package", packageName, null)
                 intent.data = uri
                 startActivity(intent)
             }
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
@@ -348,7 +336,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun bindCameraUseCases() {
         if (!::cameraProvider.isInitialized) {
-            Log.e(TAG, "CameraProvider не инициализирован при попытке привязать use cases.")
+            Log.e(TAG, getString(R.string.camera_provider_not_initialized))
             return
         }
 
@@ -365,7 +353,7 @@ class MainActivity : AppCompatActivity() {
                 it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcodes ->
                     if (barcodes.isNotEmpty() && !isScanningPaused) {
                         for (barcode in barcodes) {
-                            addBarcodeToList(barcode.rawValue ?: "Неизвестный код")
+                            addBarcodeToList(barcode.rawValue ?: getString(R.string.unknown_code))
                         }
                     }
                 })
@@ -375,10 +363,10 @@ class MainActivity : AppCompatActivity() {
             camera = cameraProvider.bindToLifecycle(
                 this, cameraSelector, preview, imageAnalyzer
             )
-            previewView.visibility = View.VISIBLE
+            previewView.visibility = android.view.View.VISIBLE
         } catch (exc: Exception) {
-            Log.e(TAG, "Ошибка при привязке вариантов использования камеры", exc)
-            showSnackbar("Ошибка при включении камеры: ${exc.message}", true)
+            Log.e(TAG, getString(R.string.camera_init_error), exc)
+            showSnackbar(getString(R.string.camera_error_message, exc.message), true)
         }
     }
 
@@ -388,7 +376,7 @@ class MainActivity : AppCompatActivity() {
     private fun stopCamera() {
         if (::cameraProvider.isInitialized) {
             cameraProvider.unbindAll()
-            previewView.visibility = View.INVISIBLE
+            previewView.visibility = android.view.View.INVISIBLE
         }
     }
 
@@ -398,19 +386,20 @@ class MainActivity : AppCompatActivity() {
     private fun addBarcodeToList(code: String) {
         // Валидация кода
         if (!BarcodeItem.isValidCode(code)) {
-            showSnackbar("Неверный формат кода", true)
+            showSnackbar(getString(R.string.invalid_code), true)
             return
         }
 
-        // Проверка на запрещенные коды
-        if (BarcodeItem.isCodeBlocked(code)) {
-            showSnackbar("⛔ Код заблокирован фильтром: $code", true)
+        // ОБНОВЛЕННАЯ ПРОВЕРКА на запрещенные коды с использованием настроек
+        val filterSettings = FilterSettingsActivity.getFilterSettings(this)
+        if (filterSettings.isEnabled && isCodeBlocked(code, filterSettings.blockedPrefixes)) {
+            showSnackbar(getString(R.string.code_blocked_message, code), true)
             return
         }
 
         // Проверка на дубликаты
         if (scannedBarcodes.any { it.code == code }) {
-            showSnackbar("Код уже существует в списке", true)
+            showSnackbar(getString(R.string.code_already_exists), true)
             return
         }
 
@@ -420,7 +409,7 @@ class MainActivity : AppCompatActivity() {
         barcodeAdapter.submitList(scannedBarcodes.toList())
         saveScannedBarcodes()
         updateBarcodeListHeader()
-        showSnackbar("✅ Отсканирован: $code")
+        showSnackbar(getString(R.string.code_scanned_message, code))
 
         // Пауза сканирования на 2 секунды
         isScanningPaused = true
@@ -430,11 +419,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * НОВАЯ ФУНКЦИЯ: Проверка блокировки кода с учетом настроек фильтра
+     */
+    private fun isCodeBlocked(code: String, blockedPrefixes: List<String>): Boolean {
+        return blockedPrefixes.any { prefix ->
+            code.uppercase().startsWith(prefix.uppercase())
+        }
+    }
+
+    /**
      * Обновить заголовок списка кодов
      */
     private fun updateBarcodeListHeader() {
         val today = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
-        barcodeListHeaderTextView.text = "📋 Отсканированные коды ($today): ${scannedBarcodes.size}"
+        val headerText = getString(R.string.scanned_codes_with_date, today, scannedBarcodes.size)
+        barcodeListHeaderTextView.text = headerText
     }
 
     /**
@@ -442,16 +441,16 @@ class MainActivity : AppCompatActivity() {
      */
     private fun clearScannedBarcodes() {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Очистить историю")
-            .setMessage("Вы уверены, что хотите очистить всю историю сканирований?")
-            .setPositiveButton("Да") { _, _ ->
+            .setTitle(getString(R.string.clear_history_title))
+            .setMessage(getString(R.string.clear_history_message))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 scannedBarcodes.clear()
                 barcodeAdapter.submitList(emptyList())
                 saveScannedBarcodes()
                 updateBarcodeListHeader()
-                showSnackbar("История очищена")
+                showSnackbar(getString(R.string.history_cleared))
             }
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
             .show()
     }
 
@@ -480,7 +479,7 @@ class MainActivity : AppCompatActivity() {
                 scannedBarcodes.addAll(loadedList)
                 barcodeAdapter.submitList(scannedBarcodes.toList())
             } catch (e: Exception) {
-                Log.e(TAG, "Ошибка при загрузке истории: ${e.message}")
+                Log.e(TAG, "Błąd podczas ładowania historii: ${e.message}")
             }
         }
     }
@@ -518,128 +517,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Генерация и отображение штрихкода Code 128
-     */
-    private fun generateAndDisplayCode128(codeValue: String) {
-        lifecycleScope.launch(Dispatchers.Default) {
-            try {
-                val barcodeEncoder = BarcodeEncoder()
-                val bitmap = barcodeEncoder.encodeBitmap(
-                    codeValue,
-                    BarcodeFormat.CODE_128,
-                    800,
-                    300
-                )
-
-                withContext(Dispatchers.Main) {
-                    generatedCodeTextView.text = "Сгенерированный код: $codeValue"
-                    generatedCodeImageView.setImageBitmap(bitmap)
-                    barcodeDisplayLayout.visibility = View.VISIBLE
-
-                    setupBarcodeDisplayButtons(bitmap)
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    showSnackbar("Ошибка при генерации штрихкода: ${e.message}", true)
-                    Log.e("CodeGenerator", "Error generating barcode", e)
-                }
-            }
-        }
-    }
-
-    /**
-     * Настройка кнопок в диалоге отображения штрихкода
-     */
-    private fun setupBarcodeDisplayButtons(bitmap: Bitmap) {
-        saveCodeButton.setOnClickListener {
-            saveImageToGallery(bitmap, "barcode_code128_${System.currentTimeMillis()}.png")
-        }
-
-        shareCodeButton.setOnClickListener {
-            shareImage(bitmap, "barcode_code128_${System.currentTimeMillis()}.png")
-        }
-    }
-
-    /**
-     * Сохранение изображения в галерею
-     */
-    private fun saveImageToGallery(bitmap: Bitmap, filename: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val contentResolver = contentResolver
-            val contentValues = android.content.ContentValues().apply {
-                put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, filename)
-                put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "image/png")
-                put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-            }
-            val uri = contentResolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-            uri?.let {
-                contentResolver.openOutputStream(it)?.use { outputStream ->
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                    showSnackbar("Изображение сохранено в Галерею")
-                }
-            } ?: showSnackbar("Не удалось сохранить изображение", true)
-        } else {
-            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            if (!imagesDir.exists()) imagesDir.mkdirs()
-            val imageFile = File(imagesDir, filename)
-            try {
-                FileOutputStream(imageFile).use { fos ->
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-                    showSnackbar("Изображение сохранено: ${imageFile.absolutePath}")
-                    val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                    mediaScanIntent.data = Uri.fromFile(imageFile)
-                    sendBroadcast(mediaScanIntent)
-                }
-            } catch (e: IOException) {
-                showSnackbar("Ошибка сохранения: ${e.message}", true)
-                Log.e("SaveImage", "Error saving image", e)
-            }
-        }
-    }
-
-    /**
-     * Поделиться изображением
-     */
-    private fun shareImage(bitmap: Bitmap, filename: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val imagesDir = File(applicationContext.cacheDir, "images")
-            imagesDir.mkdirs()
-            val imageFile = File(imagesDir, filename)
-
-            try {
-                FileOutputStream(imageFile).use { fos ->
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-                }
-
-                val imageUri: Uri = FileProvider.getUriForFile(
-                    applicationContext,
-                    "com.yaraslaustryliuk.zadbano_sorter_scanner.provider",
-                    imageFile
-                )
-
-                withContext(Dispatchers.Main) {
-                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                        type = "image/png"
-                        putExtra(Intent.EXTRA_STREAM, imageUri)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
-                    startActivity(Intent.createChooser(shareIntent, "Поделиться изображением"))
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    showSnackbar("Ошибка при подготовке изображения к отправке: ${e.message}", true)
-                    Log.e("ShareImage", "Error preparing image for sharing", e)
-                }
-            }
-        }
-    }
-
-    /**
      * Генерация PDF со всеми штрихкодами
      */
     private fun generatePdfForAllBarcodes() {
         if (scannedBarcodes.isEmpty()) {
-            showSnackbar("Список отсканированных кодов пуст", true)
+            showSnackbar(getString(R.string.empty_barcode_list), true)
             return
         }
 
@@ -731,12 +613,12 @@ class MainActivity : AppCompatActivity() {
                 pdfDocument.close()
 
                 withContext(Dispatchers.Main) {
-                    showSnackbar("PDF создан: ${pdfFile.name}")
+                    showSnackbar(getString(R.string.pdf_created_message, pdfFile.name))
                     sharePdfFile(pdfFile)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    showSnackbar("Ошибка при создании PDF: ${e.message}", true)
+                    showSnackbar(getString(R.string.pdf_creation_error, e.message), true)
                     Log.e("PDF_Generator", "Error creating PDF", e)
                 }
             }
@@ -760,9 +642,10 @@ class MainActivity : AppCompatActivity() {
      */
     private fun sharePdfFile(pdfFile: File) {
         try {
+            val authority = "${applicationContext.packageName}.provider"
             val pdfUri: Uri = FileProvider.getUriForFile(
                 applicationContext,
-                "com.yaraslaustryliuk.zadbano_sorter_scanner.provider",
+                authority,
                 pdfFile
             )
 
@@ -773,13 +656,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (shareIntent.resolveActivity(packageManager) != null) {
-                startActivity(Intent.createChooser(shareIntent, "Поделиться PDF"))
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_pdf)))
             } else {
-                showSnackbar("Не найдено приложений для отправки PDF", true)
+                showSnackbar(getString(R.string.no_pdf_apps), true)
             }
         } catch (e: Exception) {
             Log.e("SharePDF", "Error sharing PDF: ${e.message}", e)
-            showSnackbar("Ошибка при отправке PDF: ${e.message}", true)
+            showSnackbar(getString(R.string.pdf_share_error, e.message), true)
         }
     }
 

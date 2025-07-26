@@ -8,22 +8,29 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.yaraslaustryliuk.zadbano_sorter_scanner"
+        applicationId = "com.yaraslaustryliuk.zad_sorter"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Удаляем отладочную информацию
+            isDebuggable = false
+        }
+        debug {
+            isMinifyEnabled = false
+            isDebuggable = true
         }
     }
 
@@ -38,6 +45,30 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
+    }
+
+    // Подписывание APK (добавьте свой keystore)
+    signingConfigs {
+        create("release") {
+            // TODO: Создайте keystore и добавьте настройки
+            // storeFile = file("path/to/your/keystore.jks")
+            // storePassword = "your_store_password"
+            // keyAlias = "your_key_alias"
+            // keyPassword = "your_key_password"
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            // signingConfig = signingConfigs.getByName("release")
+        }
     }
 }
 

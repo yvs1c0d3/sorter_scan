@@ -60,17 +60,6 @@ data class BarcodeItem(
 
     companion object {
         /**
-         * Проверяет, является ли код запрещенным для сканирования
-         * Запрещенные префиксы: WAW-MA, WAW-BR, PM
-         */
-        fun isCodeBlocked(code: String): Boolean {
-            val blockedPrefixes = listOf("WAW-MA", "WAW-BR", "PM")
-            return blockedPrefixes.any { prefix ->
-                code.uppercase().startsWith(prefix.uppercase())
-            }
-        }
-
-        /**
          * Валидация кода перед добавлением
          */
         fun isValidCode(code: String?): Boolean {
